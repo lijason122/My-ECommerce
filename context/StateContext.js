@@ -95,6 +95,10 @@ export const StateContext = ({ children }) => {
     });
   };
 
+  const resetQty = () => {
+    setQty(1);
+  };
+
   return (
     <Context.Provider
       value={{
@@ -105,6 +109,7 @@ export const StateContext = ({ children }) => {
         qty,
         incQty,
         decQty,
+        resetQty,
         onAdd,
         setShowCart,
         toggleCartItemQuantity,
