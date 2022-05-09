@@ -5,33 +5,24 @@ const Context = createContext();
 
 export const StateContext = ({ children }) => {
   const [showCart, setShowCart] = useState(false);
-  const [cartItems, setCartItems] = useState(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("items") !== "undefined"
-        ? JSON.parse(localStorage.getItem("items"))
-        : [];
-    }
-  });
-  const [totalPrice, setTotalPrice] = useState(() => {
-    if (typeof window !== "undefined") {
-      return JSON.parse(localStorage.getItem("price")) || 0;
-    }
-  });
-  const [totalQuantities, setTotalQuantities] = useState(() => {
-    if (typeof window !== "undefined") {
-      return JSON.parse(localStorage.getItem("quantities")) || 0;
-    }
-  });
+  let getCartItems =
+    typeof window !== "undefined" && JSON.parse(localStorage.getItem("items"));
+  const [cartItems, setCartItems] = useState(getCartItems?.cartItems || []);
+  const [totalPrice, setTotalPrice] = useState(getCartItems?.totalPrice || 0);
+  const [totalQuantities, setTotalQuantities] = useState(
+    getCartItems?.totalQuantities || 0
+  );
   const [qty, setQty] = useState(1);
 
   let foundProduct;
   let index;
 
   useEffect(() => {
-    localStorage.setItem("items", JSON.stringify(cartItems));
-    localStorage.setItem("price", JSON.stringify(totalPrice));
-    localStorage.setItem("quantities", JSON.stringify(totalQuantities));
-  }, [cartItems, totalPrice, totalQuantities]);
+    localStorage.setItem(
+      "items",
+      JSON.stringify({ cartItems, totalPrice, totalQuantities })
+    );
+  }, [getCartItems]);
 
   const onAdd = (product, quantity) => {
     const checkProductInCart = cartItems.find(
