@@ -1,3 +1,5 @@
+@import 'animate.css';
+
 html,
 body, * {
   padding: 0;
@@ -272,7 +274,6 @@ text-align: end;
   right: 0;
   top: 0;
   z-index: 100;
-  /* will-change: transform; */
   transition: all 1s ease-in-out;
 
 }

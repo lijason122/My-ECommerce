@@ -1,5 +1,4 @@
-import React, { useRef } from "react";
-import Link from "next/link";
+import React, { useState, useRef } from "react";
 import {
   AiOutlineMinus,
   AiOutlinePlus,
@@ -13,6 +12,7 @@ import { urlFor } from "../lib/client";
 import getStripe from "../lib/getStripe";
 
 const Cart = () => {
+  const [animation, setAnimation] = useState("fadeInRight");
   const cartRef = useRef();
   const {
     totalPrice,
@@ -22,6 +22,14 @@ const Cart = () => {
     toggleCartItemQuantity,
     onRemove,
   } = useStateContext();
+
+  const hide = async (ms) => {
+    setAnimation("fadeOutRight");
+
+    await new Promise((r) => setTimeout(r, ms));
+
+    setShowCart(false);
+  };
 
   const handleCheckout = async () => {
     const stripe = await getStripe();
@@ -45,11 +53,11 @@ const Cart = () => {
 
   return (
     <div className="cart-wrapper" ref={cartRef}>
-      <div className="cart-container">
+      <div className={`cart-container animate__animated animate__${animation}`}>
         <button
           type="button"
           className="cart-heading"
-          onClick={() => setShowCart(false)}
+          onClick={() => hide(650)}
         >
           <AiOutlineLeft />
           <span className="heading">Your Cart</span>
@@ -60,15 +68,9 @@ const Cart = () => {
           <div className="empty-cart">
             <AiOutlineShopping size={150} />
             <h3>Your shopping bag is empty</h3>
-            <Link href="/">
-              <button
-                type="button"
-                onClick={() => setShowCart(false)}
-                className="btn"
-              >
-                Continue Shopping
-              </button>
-            </Link>
+            <button type="button" onClick={() => hide(650)} className="btn">
+              Continue Shopping
+            </button>
           </div>
         )}
         <div className="product-container">
@@ -95,9 +97,7 @@ const Cart = () => {
                         >
                           <AiOutlineMinus />
                         </span>
-                        <span className="num" onClick="">
-                          {item.quantity}
-                        </span>
+                        <span className="num">{item.quantity}</span>
                         <span
                           className="plus"
                           onClick={() =>
