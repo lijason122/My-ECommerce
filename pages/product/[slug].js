@@ -88,8 +88,8 @@ const ProductDetails = ({ product, products }) => {
       <div className="maylike-products-wrapper">
         <h2>You may also like</h2>
         <div className="marquee">
-          <div className="maylike-products-container track" onClick={resetQty}>
-            {products.map((item) => (
+          <div className="maylike-products-container" onClick={resetQty}>
+            {products.filter((item) => item._id !== product._id).map((item) => (
               <Product key={item._id} product={item} />
             ))}
           </div>
