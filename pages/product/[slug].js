@@ -89,7 +89,7 @@ const ProductDetails = ({ product, products }) => {
         <h2>You may also like</h2>
         <div className="marquee">
           <div className="maylike-products-container track" onClick={resetQty}>
-            {products.map((item) => (
+            {products.filter((item) => item._id !== product._id).map((item) => (
               <Product key={item._id} product={item} />
             ))}
           </div>
